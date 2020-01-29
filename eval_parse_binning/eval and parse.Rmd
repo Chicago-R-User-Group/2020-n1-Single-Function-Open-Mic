@@ -1,7 +1,7 @@
 ---
 title: "eval() (and parse() ) "
 author: "Adam Ginensky"
-date: "January 19, 2019"
+date: "January 29, 2019"
 output: slidy_presentation
 ---
 
@@ -119,7 +119,11 @@ I've used this for when I need to save files with different names based on param
 ```{r}
 library(MASS) # my favorite data set Boston
 library(randomForest) # running a random forest =
+```
 
+---
+
+```{r}
 data(Boston)
 summary(Boston)
 ```
