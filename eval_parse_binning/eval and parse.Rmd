@@ -1,0 +1,160 @@
+---
+title: "eval() (and parse() ) "
+author: "Adam Ginensky"
+date: "January 19, 2019"
+output: slidy_presentation
+---
+
+## 'If eval is the answer, you're probably asking the wrong question'- or is it ? 
+
+* Very early on in my careeR I came across the need to create file names on the fly.  
+* What I needed to do was run some code on a file, take the results and save it to a file whose name depended on data dependent on the previous code.  
+* Further I was doing this in a huge loop and creating literally hundreds of files whose name couldn't be know prior to the code running.  
+* The solution I had was eval (and parse).  
+
+---
+
+* Investigating eval, which has steep learning curve syntax (imho), I came across the  quote. 
+* If eval is the answer, then you are asking the wrong question.  
+* I've also seen very respected, by me anyway, R coders make the same claim about parse().   
+* It was from a respected person, so it gave me pause.  I've asked just about everyone I talk to about R what their opinion is and 
+* I have gotten answers ranging from it's dangerous but use it if you want to I don't use it. 
+
+---
+
+* Nonetheless I will state two things- (a year later, errr 4 things)
+1. I still think it is useful.
+2. At least one other person agrees with me, see Rchaeology: Idioms of R Programming
+Paul E. Johnson <pauljohn @ ku.edu> (available on the web).
+3. There are times when it can help explain what is going on with the code.
+4. I've certainly seen it used  in the guts of serious code.
+
+---
+
+## What is eval 
+
+* eval() evaluates an R expression.  Let me give some examples
+
+```{r}
+x = 3
+y = 4
+eval(3+4)
+eval(x+y)
+eval(paste0(x,"+",y))
+eval(paste0('x',"+","y"))
+```
+
+---
+
+* The last two may be surprising.
+* What is going on is that R doesn't understand that the last expression, "eval(paste0('x',"+","y"))"  is a formula. 
+* and that is where parse comes in.  
+* More correctly, parse(text = )
+
+```{r}
+eval(parse(text = paste0('x',"+","y")))
+```
+* I think that is what we expected to see. 
+* The moral is that eval evaluates an expression in R, but an expression may not be a formula.
+
+---
+
+* I could end this here and everyone would leave and think if eval is the answer, then the question may or may not be wrong, but it is probably dumb.
+* The syntax of eval(parse(text=)) can be daunting, particularly if the paste is complicated, 
+* There have been times when I have had to evaluate code on the fly and run different code
+depending on the output.
+* At such times, I have been unable to find a better answer than eval.
+
+---
+
+
+
+### An example 
+
+The idea is - 
+
+1. Create an text expression from many variable pieces using paste or paste0
+2. Use parse(text =) to turn that expression that R can evaluate and
+3. Use eval to evaluate the expression.
+
+
+---
+
+* I've also used it in functions.  Below are two pieces
+
+
+```{r}
+g = function(a,b){ans = a+ 2*b
+ans}
+paste0('z=',y,'*cos(x)' )
+paste0('g(exp(z)*y+',2,'+z,z)')
+```
+
+Now we can put it together 
+```{r}
+eval(parse(text =  paste0('z=',y,'*cos(x)')  ))
+eval(parse(text =  paste0('g(exp(z)*y+',2,'+z,z)')  ))
+```
+
+---
+
+I've used this for when I need to save files with different names based on parameter choices
+
+```{r}
+# for( i in some range){
+## do some ML stuff and evaluate the results
+## Classify the results as say good bad or indifferent in a variable 'outcome' tod = Sys.Date()
+# eval(parse( text = paste0("write.csv(","test on ",tod,"",outcome,".txt",")""))
+#}
+
+```
+
+
+
+* Imagine one is imagine one if running a random forest. 
+* If you don't know what it is, imagine it as a black box.
+* The important part is that there are two 'tuning parameters', ntree and mtry.
+* I want to run the test a number of times and save each object created.
+
+```{r}
+library(MASS) # my favorite data set Boston
+library(randomForest) # running a random forest =
+
+data(Boston)
+summary(Boston)
+```
+
+
+---
+
+* Usually one predicts medv, the median value of a house based on the other variables.
+* We will let mtry, the number of variables used run from 2 - 4 and the number of trees run from 100 - 500. 
+* Neither of these assumptions are particularly good, I just want to create a set of models.
+* First I'll run the paste statement -
+
+```{r}
+i= 2; j=100
+flnm = paste0("bost_mtr_",i,"_ntree_",j,".rds")
+ flnm    
+```
+
+
+```{r}
+
+for(i in 2:4){ # i runs over number of variables
+  for(j in (1:5)){ # j is ntree
+      tmp = randomForest(medv~., data = Boston, mtry = i, ntree = j)
+      flnm = paste0("bost_mtr_",i,"_ntree_",j,".rds")
+    eval(parse( text =  paste0('saveRDS(tmp,file =\' ',flnm,' \' )' ) )) # 
+    
+    
+  }
+  
+}
+```
+
+
+---
+* I find eval and parse to be functions that I don't often use, but when necessary they can be very helpful.
+
+

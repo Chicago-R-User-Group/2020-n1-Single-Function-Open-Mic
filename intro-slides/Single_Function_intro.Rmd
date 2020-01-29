@@ -63,16 +63,16 @@ library(RUGtools)
 <br/>
 
 - Founded in the fall of 2008, by a small group of open source package authors, finance industry practitioners, and finance professors.
-- Single-track presentation model, tutorials, roundtable, [keynotes](https://www.rinfinance.com/about/)
-- [Call for Papers](https://uic.cvent.com/events/2020-r-finance-call-for-presentations/registration-add8ccef16bc42778b301c23ccab1a9e.aspx?fqp=true). Extended Dealine: February 29 (leap year)!
-- Early discounted registration will open in march
+- Single-track presentation model, tutorials, roundtable, [keynotes](https://www.rinfinance.com/about/).
+- [Call for Papers](https://uic.cvent.com/events/2020-r-finance-call-for-presentations/registration-add8ccef16bc42778b301c23ccab1a9e.aspx?fqp=true). Extended Dealine: February 29 (leap year).
+- Early discounted registration will open in March.
 
 ## 
 
 <div style="text-align:center"><img src="images/useR_conf.png" height="275px"/></div>
 
 - Main annual meeting of the R community, and attendance in 2020 is anticipated to be over 1,000 people including R developers and users.
-- [Call for Abstracts](https://user2020.r-project.org/news/2019/11/20/call-for-abstracts/) Deadline: February 3!
+- [Call for Abstracts](https://user2020.r-project.org/news/2019/11/20/call-for-abstracts/) Deadline: February 3.
 - Early registration in February! Book your hotels ASAP! Limited in STL.
     - Call (314) 621-9600, give secret password **R foundation SLC** conference for discounted rate of $159 per night.
 
@@ -82,8 +82,7 @@ library(RUGtools)
 
 <div style="text-align:center"><img src="images/jared_lander.png" height="350px"/></div>
 
-- Jared Lander of Landers Analytics
-    - Organizer of the New York Open Statistical Programming Meetup
+- Organizer of the New York Open Statistical Programming Meetup
 - Talk: "On all the ways to lasso in R"
 - Date: February 19th
 
@@ -106,18 +105,24 @@ Thanks Dale Rosenthal for providing his WeWork space for tonight's meetup!
 # Tonight's Event
 
 ## Single-Function Lightning Rounds
-
 <div style="text-align:center"><img src="images/function_mic.png" width="250px"/></div>
 
 - **Charlotte Frei**: Data compression/loading algorithms with `save()`/`load()`.
 - **Adam Ginesky**: 
-    1. Evaluating expressions/functions with `do.call()` and `eval()`/`parse()` 
-    2. Where am I? Haversine distance
-- **Svetlana Levitan**: Structural Equation Modeling with `PMML`/`ONNX`
+    1. Evaluating expressions/functions with `eval()` and `parse()` 
+    2. Binning Data - `quantile`, `cut`, `ntile`, and logical indexing
+- **Svetlana Levitan**: Open standards for ML model deployment with `PMML`/`ONNX`
 - **Dylan Stark**: Testing package functions with `testthat::with_mock()`
 - **Justin Shea** - Blazing fast binary search with `data.table::setindex()`
 - **Open Mic** - Any unscheduled, impromptu 5-10 minute talk on any R topic
 
+
+## Speaker Gifts 
+<div style="text-align:center"><img src = "images/Data_Points_Summit.png" width="600px"/></div>
+
+- [Half Day Summit](https://datapoints.formulated.by/chicago/) (12:30-6:50 PM): covering data science for enterprise operations in Manufacturing, Retail and Finance.
+- CRUG received three free passes
+- For volunteered speakers: Svetlana, Dylan, and Open Mic (w/ tie breaker)
 
 
 

@@ -1,0 +1,157 @@
+---
+title: "Binning Data- quantile,cut,ntile, and logical indexing"
+author: "Adam Ginensky"
+date: "January 29, 2020"
+output: slidy_presentation
+---
+
+## Introduction
+
+* There are times when having too many data points is an issue-
+  1. Binning data- histograms with too many different values take time.
+  2. Quantile regressions are another example. 
+* We can reduce the number of distinct data points using binning  via logical indexing.  
+
+##   WHAT IS BINNING ?
+
+* Binning is just what it says it is. 
+* It takes the data and drops it into a bin consisting of all data points between two fixed values.  
+* The standard binning function in R is quantile which divides a data set and divides it up into equal pieces. 
+* That is we want to find cuts in the data so that if we use these cuts as the seperators for our data, each bin has an equal amount of data.  
+* The two further questions we will discuss are-
+  1. To which bin does a given data point belong ?
+  2. Can we assign all values in a given bin one standard value ?
+
+---
+
+## The Quantile() function
+
+* While the quantile function defaults to dividing the data into 4 pieces, the probs argument of the function tells R how many bins to create.  
+* For example, given a data set x, quantile(x) will produce the four quartiles of the data set. 
+* More precisely it will give the 5 cut values so that this divides the data into 4 pieces. 
+* Giving the function the argument probs = seq(0,1,1/n) will divide the data into n pieces.
+  Let's see-
+  
+---
+
+
+```{r}
+# sample the integers 1- 1000 100 times with replacement)
+x =c(1:100)
+quantile(x) # Shows the cut points to divide the data into quartiles
+quantile(x,probs = seq(0,1,.1)) # compute the deciles
+
+```
+
+
+---
+
+```{r}
+quantile(x,probs = seq(0,1,.25)) # computes the quartiles.
+```
+
+* Notice that the '0th' quantile is the minimum of x and that the last quantile is the maximum. 
+* In addtition, the median is the 50th quantile. 
+
+---
+
+
+The output of the quantile function is a vector with all the cut points.  The cut points are labelled.  
+
+```{r}
+
+x = c(1:1000)
+quantile(x) # displays the division
+
+
+```
+
+---
+
+* We illustrate in more detail-
+
+```{r}
+y = quantile(x,probs = seq(0,1,1/1000)) # divide the data into 1000 bins
+y[1] # minimum value
+y[1000] # start of last  bin
+y[1001] # maximum value 
+y[501] # the median 
+head(names(y))
+```
+
+---
+
+### What can we do with this
+
+* With the information provided by quantile, we can bin data, that is figure out which bin a given piece of data lies in. 
+* The next question is- to which bin does a given piece of data belong ?
+* Base R has a solution cut(), but there is a better one (afaik).
+*  The dplyr package is a little corner of the tidyverse at this point, but it has a version of cut called ntile(). 
+* Imho, the syntax is cleaner and it is seemingly faster than cut. 
+
+---
+
+* v1 is just an array with 1M entries
+
+
+
+```{r}
+library(dplyr) # we need to load the library
+v1= matrix(rnorm(1000000),1000000) # matrix with 1M rows and 5 cols
+
+see1= ntile(v1,100)
+see2 = ntile(v1,1000)
+
+head(see1) # first 6 bins
+summary(see1) # as expected
+head(see2)
+summary(see2)
+
+
+```
+
+---
+
+## And Finally- logical indexing
+
+* ntile() tells you into which (quan)tile a given data point goes. 
+* Suppose we now want to assign to each element in a bin the same value- how do we do that ?
+* Logical indexing.
+* We have our million value vector and let's change it to assign to each value the mean of the bin it would fall into.
+
+```{r}
+pctl = quantile(x, probs = seq(0,1,.01)) # 101 values
+pctl.low = pctl[1:100] # the lower value of all the bins
+pctl.high = pctl[2:101] # the upper values
+pctl.mean = .5*(pctl.low + pctl.high)
+
+
+
+```
+
+
+---
+
+* so pctl.mean has the average value of all the bins.
+* Now we want to assign to each value of v1, the average value of it's bin.
+* Here's the recipe-
+
+---
+
+
+```{r}
+pct.bin = pctl.mean[ntile(v1,100)]
+```
+
+* This does it 
+* Why ?
+  1. It's a vector of length(v1)
+  2. in row j it looks at which tile v1[j] is and assigns to the j-th element the value of pctl.mean of that value.
+  3. More detail.  Suppose v1[200] is in the fourth tile, then the 200th element of pct.bin is pctl.mean[4].
+  
+---
+
+### Thanks for your attention + Conclusion
+
+* Logical Indexing is a brain teaser, but can be used to answer some complicated questions. 
+* Imho it's worth taking the time to understand it. 
