@@ -3,6 +3,7 @@ Multiple featured and open mic speakers who presented lightning talks on a singl
 
 <img src="https://github.com/Chicago-R-User-Group/2020-n1-Single-Function-Open-Mic/blob/master/intro-slides/images/function_mic.png" width="400px" />
 
+- ### **Meetup Introduction**: [slides](https://raw.githack.com/Chicago-R-User-Group/2020-n1-Single-Function-Open-Mic/master/intro-slides/Single_Function_intro.html)
 - ### **Charlotte Frei**: Data compression/loading algorithms with `save()`/`load()` [slides](https://github.com/Chicago-R-User-Group/2020-n1-Single-Function-Open-Mic/blob/master/save()andload()_charlotte_frei.pdf)
 - ### **Adam Ginesky**: 
     1. #### Evaluating expressions/functions with `do.call()` and `eval()`/`parse()` [slides](https://raw.githack.com/Chicago-R-User-Group/2020-n1-Single-Function-Open-Mic/master/eval_parse_binning/eval-and-parse.html)
